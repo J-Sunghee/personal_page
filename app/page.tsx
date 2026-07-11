@@ -83,6 +83,7 @@ export default function Home() {
   const [data, setData] = useState<ResearchData>(fallbackData);
   const [active, setActive] = useState("international");
   const [query, setQuery] = useState("");
+  const [archiveOpen, setArchiveOpen] = useState(false);
   const [talkQuery, setTalkQuery] = useState("");
   const [talkYear, setTalkYear] = useState(currentYear);
   const [talkLimit, setTalkLimit] = useState(12);
@@ -149,7 +150,7 @@ export default function Home() {
     <main>
       <header className="site-header">
         <a className="brand" href="#top" aria-label="홈으로 이동">진성희<span>(Jin, Sung-Hee) / EdTech</span></a>
-        <nav aria-label="주요 메뉴"><a href="#bio">Bio</a><a href="#research">Research</a><a href="#archive">Archive</a><a href="#speaking">Education</a><a href="#talks">Talks</a><a href="#contact">Contact</a></nav>
+        <nav aria-label="주요 메뉴"><a href="#bio">Bio</a><a href="#research">Research</a><a href="#archive">Archive</a><a href="#talks">Talks</a><a href="#contact">Contact</a></nav>
         <span className="header-role">Professor · Researcher</span>
       </header>
 
@@ -158,7 +159,7 @@ export default function Home() {
           <p className="eyebrow">Educator &amp; Researcher · Educational Technology</p>
           <h1>교육을 설계하고,<br />배움을<br /><em>연구합니다.</em></h1>
           <p className="hero-lead">교육공학 교수자이자 연구자로서 AI와 데이터를 활용한 교수학습의 가능성을 탐구합니다. 연구에서 발견한 지식을 수업과 교육 현장에 연결하며, 더 나은 배움의 경험을 설계합니다.</p>
-          <div className="hero-actions"><a className="primary-button" href="#research">Explore research</a><a className="text-link" href="#speaking">Education & practice ↘</a></div>
+          <div className="hero-actions"><a className="primary-button" href="#research">Explore research</a><a className="text-link" href="#bio">Read biography ↘</a></div>
         </div>
         <div className="portrait-wrap">
           <div className="portrait-note"><span>01</span> 진성희 · JIN, SUNG-HEE, Ph.D.</div>
@@ -196,18 +197,13 @@ export default function Home() {
       </section>
 
       <section className="archive section" id="archive">
-        <div className="archive-intro"><div className="section-label"><span>05</span> Research Archive</div><h2>{total}<small> records</small></h2><p>논문, 학술발표, 저서, 연구과제, 수상과 활동을 Google Sheet와 연결해 관리합니다.</p><button className="sync-button" onClick={refreshFromGoogle} disabled={syncState === "syncing"}>{syncState === "syncing" ? "Updating…" : syncState === "success" ? "Updated from Google Sheet ✓" : syncState === "error" ? "다시 업데이트" : "Google Sheet에서 업데이트"}</button></div>
-        <div className="archive-browser"><div className="category-tabs" role="tablist" aria-label="연구 실적 분류">{archiveSections.map((item) => <button key={item.id} role="tab" aria-selected={item.id === active} onClick={() => { setActive(item.id); setQuery(""); }}><span>{item.title}</span><b>{item.rows.length}</b></button>)}</div><div className="records-panel" role="tabpanel"><div className="records-head"><div><span>{activeSection.english}</span><h3>{activeSection.title}</h3></div><label><span className="sr-only">연구 실적 검색</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="키워드 검색" /></label></div><div className="records-list">{filteredRows.slice(0, 20).map((row, index) => <article key={`${primaryTitle(row)}-${index}`}><span className="record-year">{row.연도 || row.연월 || row.기간 || "—"}</span><div><h4>{primaryTitle(row)}</h4><p>{secondaryText(row)}</p></div><span className="record-no">{String(index + 1).padStart(2, "0")}</span></article>)}{!filteredRows.length && <p className="empty">검색 결과가 없습니다.</p>}</div></div></div>
-      </section>
-
-      <section className="speaking section" id="speaking">
-        <div className="speaking-head"><div className="section-label"><span>06</span> Education & Practice</div><h2>연구를 현장의<br /><em>실행으로.</em></h2><p>AI와 교육공학 연구를 기반으로 교수자·교사·연구자를 위한 교육 프로그램과 실습형 워크숍을 개발하고 운영합니다.</p></div>
-        <ol className="education-topics"><li><span>01</span><h3>AI 활용 수업설계 및 교육자료 개발</h3></li><li><span>02</span><h3>AI 활용 캡스톤디자인/PBL 수업설계 및 개발</h3></li><li><span>03</span><h3>AI 활용 평가 및 피드백 보조 지원</h3></li><li><span>04</span><h3>AI 활용 리서치 에이전트 개발</h3></li><li><span>05</span><h3>바이브코딩을 활용한 수업자료 개발</h3></li></ol>
+        <div className="archive-intro"><div><div className="section-label"><span>05</span> Research Archive</div><h2>{total}<small> records</small></h2></div><div className="archive-note"><p>논문, 학술발표, 저서, 연구과제, 수상과 활동을 Google Sheet와 연결해 관리합니다. 분류를 선택하면 해당 목록이 아래에 펼쳐집니다.</p><button className="sync-button" onClick={refreshFromGoogle} disabled={syncState === "syncing"}>{syncState === "syncing" ? "Updating…" : syncState === "success" ? "Updated from Google Sheet ✓" : syncState === "error" ? "다시 업데이트" : "Google Sheet에서 업데이트"}</button></div></div>
+        <div className="archive-browser"><div className="category-tabs" role="tablist" aria-label="연구 실적 분류">{archiveSections.map((item) => <button key={item.id} role="tab" aria-selected={archiveOpen && item.id === active} aria-expanded={archiveOpen && item.id === active} aria-controls="archive-records" onClick={() => { setActive(item.id); setQuery(""); setArchiveOpen(true); }}><span>{item.title}</span><b>{item.rows.length}</b><i>목록 보기 ↓</i></button>)}</div>{archiveOpen && <div className="records-panel" id="archive-records" role="tabpanel"><div className="records-head"><div><span>{activeSection.english}</span><h3>{activeSection.title}</h3></div><label><span className="sr-only">연구 실적 검색</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="키워드 검색" /></label></div><div className="records-list">{filteredRows.slice(0, 20).map((row, index) => <article key={`${primaryTitle(row)}-${index}`}><span className="record-year">{row.연도 || row.연월 || row.기간 || "—"}</span><div><h4>{primaryTitle(row)}</h4><p>{secondaryText(row)}</p></div><span className="record-no">{String(index + 1).padStart(2, "0")}</span></article>)}{!filteredRows.length && <p className="empty">검색 결과가 없습니다.</p>}</div></div>}</div>
       </section>
 
       <section className="talks section" id="talks">
         <div className="talks-heading">
-          <div><div className="section-label"><span>07</span> Invited Talks</div><h2>초청강연 /<br /><em>{currentYear}</em></h2></div>
+          <div><div className="section-label"><span>06</span> Invited Talks</div><h2>초청강연 /<br /><em>{currentYear}</em></h2></div>
           <div className="talks-summary"><span>Selected themes · multiple institutions</span><p>하나의 강연 주제가 여러 대학과 기관에서 진행될 수 있어 횟수 대신 주제와 초청기관을 기록합니다.</p></div>
         </div>
         <div className="talks-tools">
