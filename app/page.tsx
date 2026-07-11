@@ -49,6 +49,15 @@ function secondaryText(row: RecordRow) {
     .filter(Boolean).join(" · ");
 }
 
+function paperLink(row: RecordRow, kind: "international" | "korean") {
+  const raw = kind === "international"
+    ? row["DOI/URL"] || row.DOI || row.doi
+    : row["원문보기"] || row["원문 보기"] || row["원문URL"] || row.URL || row["DOI/URL"];
+  if (!raw) return "";
+  if (/^https?:\/\//i.test(raw)) return raw;
+  return kind === "international" ? `https://doi.org/${raw.replace(/^doi:\s*/i, "")}` : raw;
+}
+
 type GvizResponse = {
   status: string;
   table?: {
@@ -181,8 +190,8 @@ export default function Home() {
 
       <section className="research section" id="research">
         <div className="section-heading"><div className="section-label"><span>03</span> Latest Research</div><h2>Now / {currentYear}</h2><p>{currentYear}년 국제·국내 학술지 실적을 모두 확인할 수 있습니다.</p></div>
-        <div className="research-lane"><div className="lane-title"><span>International</span><h3>국제학술지</h3><b>{internationalCurrent.length}</b></div><div className="research-grid">{internationalCurrent.map((row, index) => <article className={index === 0 ? "research-card featured" : "research-card"} key={`${primaryTitle(row)}-${index}`}><div className="card-top"><span>International Journal</span><span>{row.연도}</span></div><h3>{primaryTitle(row)}</h3><p>{secondaryText(row)}</p>{row["색인·지표"] && <span className="metric">{row["색인·지표"]}</span>}</article>)}</div></div>
-        <div className="research-lane domestic"><div className="lane-title"><span>Korean</span><h3>국내학술지</h3><b>{koreanCurrent.length}</b></div><div className="research-grid korean-grid">{koreanCurrent.map((row, index) => <article className="research-card" key={`${primaryTitle(row)}-${index}`}><div className="card-top"><span>Korean Journal</span><span>{row.연도}</span></div><h3>{primaryTitle(row)}</h3><p>{secondaryText(row)}</p></article>)}</div></div>
+        <div className="research-lane"><div className="lane-title"><span>International</span><h3>국제학술지</h3><b>{internationalCurrent.length}</b></div><div className="research-grid">{internationalCurrent.map((row, index) => { const link = paperLink(row, "international"); return <article className={index === 0 ? "research-card featured" : "research-card"} key={`${primaryTitle(row)}-${index}`}><div className="card-top"><span>International Journal</span><span>{row.연도}</span></div><h3>{primaryTitle(row)}</h3><p>{secondaryText(row)}</p>{row["색인·지표"] && <span className="metric">{row["색인·지표"]}</span>}{link && <a className="paper-button" href={link} target="_blank" rel="noreferrer" aria-label={`${primaryTitle(row)} 논문 보기`}>논문 보기 ↗</a>}</article>; })}</div></div>
+        <div className="research-lane domestic"><div className="lane-title"><span>Korean</span><h3>국내학술지</h3><b>{koreanCurrent.length}</b></div><div className="research-grid korean-grid">{koreanCurrent.map((row, index) => { const link = paperLink(row, "korean"); return <article className="research-card" key={`${primaryTitle(row)}-${index}`}><div className="card-top"><span>Korean Journal</span><span>{row.연도}</span></div><h3>{primaryTitle(row)}</h3><p>{secondaryText(row)}</p>{link && <a className="paper-button" href={link} target="_blank" rel="noreferrer" aria-label={`${primaryTitle(row)} 논문 보기`}>논문 보기 ↗</a>}</article>; })}</div></div>
       </section>
 
       <section className="focus section">
