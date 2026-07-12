@@ -38,5 +38,20 @@ h1{font-size:clamp(48px,5.2vw,72px);line-height:1.08;letter-spacing:-.035em;font
 .archive{background:var(--navy)}.archive-intro h2{font-weight:400}.sync-button,.category-tabs button,.records-panel{border-radius:10px}.category-tabs button{background:#18345f;border-color:#36517a}.category-tabs button span{font-size:21px;font-weight:500}.records-panel{background:#152f58}
 .talks{background:var(--paper)}.talks-heading h2{font-size:clamp(44px,5vw,70px);font-weight:500}.year-filters button,.talk-sync,.talk-more,.talks-tools input{border-radius:8px}.talk-list article{padding:34px 0}.talk-content h3{font-weight:500}
 .collaborate{background:#e5ebf4;grid-template-columns:.65fr 1.5fr .75fr}.academic-label{font-size:13px}.collaborate h2{font-weight:500}footer{background:var(--navy);color:#d8e0ed;padding:32px max(24px,calc((100vw - 1200px)/2))}
-@media(max-width:980px){.hero{padding-top:72px}.career-bar{margin-left:24px;margin-right:24px}.research-card.featured{grid-column:auto}.about{gap:44px}}
-@media(max-width:620px){.hero{padding:56px 24px 72px}.eyebrow{font-size:14px}.hero-lead{font-size:16px}.section{padding:72px 24px}.paper-actions{align-items:flex-start;flex-wrap:wrap}.metric{white-space:normal}.career-bar{margin-bottom:72px}}
+@media(max-width:980px){
+  .site-header{grid-template-columns:minmax(0,1fr) auto;padding-inline:24px}.hero{grid-template-columns:minmax(0,1fr);padding-top:72px}.portrait-wrap{width:min(390px,100%)}
+  .about,.focus,.collaborate{grid-template-columns:minmax(0,1fr);gap:44px}.bio-side{min-height:auto}.contact-links{grid-column:auto}
+  .section-heading{grid-template-columns:minmax(0,1fr)}.section-heading p{justify-self:start}.research-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.research-card.featured{grid-column:auto}
+  .career-bar{margin-left:24px;margin-right:24px}.category-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.talks-heading{grid-template-columns:minmax(0,1fr)}.talks-summary{justify-self:start}
+}
+@media(max-width:620px){
+  .site-header{height:68px}.brand{display:flex;align-items:center;min-width:0;font-size:16px;white-space:nowrap}.brand:before{flex:0 0 auto;margin-right:7px}.brand span{font-size:16px}.header-role{display:none}
+  .hero{grid-template-columns:minmax(0,1fr);padding:48px 24px 72px;gap:42px}.hero-copy{min-width:0}.eyebrow{font-size:14px;line-height:1.5;overflow-wrap:normal}.hero-lead{font-size:16px}.hero-actions{flex-direction:row;flex-wrap:wrap}.portrait-wrap{width:100%;max-width:360px}
+  .section{padding:72px 24px}.about-copy h2,.section-heading h2,.archive-intro h2,.collaborate h2{font-size:clamp(38px,12vw,52px)}.bio-text,.bio-credentials{grid-template-columns:minmax(0,1fr)}
+  .career-bar{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:72px}.career-bar>div,.career-bar>p{min-width:0}.career-bar>p{grid-column:1/-1}
+  .research-grid{grid-template-columns:minmax(0,1fr)}.research-card{min-height:0}.lane-title{grid-template-columns:minmax(0,1fr) auto}.lane-title span{grid-column:1/-1}.paper-actions{align-items:flex-start;flex-wrap:wrap}.metric{white-space:normal}
+  .focus-list article{grid-template-columns:34px minmax(0,1fr)}.focus-list p{grid-column:2}.category-tabs{grid-template-columns:minmax(0,1fr)}.archive-intro{grid-template-columns:minmax(0,1fr)}
+  .records-head{align-items:stretch;flex-direction:column}.records-head input{width:100%}.records-list article{grid-template-columns:58px minmax(0,1fr)}.talks-tools{grid-template-columns:minmax(0,1fr)}.talks-tools input{width:100%;min-width:0}.talk-list article{grid-template-columns:68px minmax(0,1fr)}
+  .contact-links{flex-direction:column;align-items:flex-start}footer{flex-direction:column}
+}
+@media(max-width:390px){.site-header{padding-inline:16px}.brand,.brand span{font-size:14px}.hero,.section{padding-left:18px;padding-right:18px}h1{font-size:42px}.career-bar{grid-template-columns:minmax(0,1fr);margin-left:18px;margin-right:18px}.career-bar>p{grid-column:auto}}
